@@ -1,21 +1,18 @@
 {
-  "档案版本": "SG-JA18-BASELINE-1",
+  "档案版本": "SG-214-SPRING-RESULT-1",
   "目录结构版本": "ARCHIVE-ROOT-6-SANGUO",
-  "版本名称": "建安十八年三国推演当前基线",
-  "当前游戏阶段": "建安十八年，益州攻略收官 / 新政权接管基线；具体季节待核",
+  "版本名称": "214年春季政务纪要结算状态",
+  "当前游戏阶段": "214年春季季末；汉纪映射待核",
   "更新日期": "2026-11-04",
   "权威来源": [
-    "CURRENT_ARCHIVE.md",
-    "三国档案/99_原始资料/建安十八年/奏疏6a68b3397b9086c9b9c41ce7-0.md",
+    "三国档案/01_季度政务/03_朝政纪要/214年/春季/奏疏6a68b3397b9086c9b9c41ce7-1.md",
     "data/current_snapshot.json",
     "data/personnel_current.json",
     "data/factions_current.json",
-    "data/territories_current.json",
-    "data/powers_current.json",
     "data/military_current.json",
     "data/equipment_current.json",
-    "data/appointments_pending.json",
-    "data/current_directives.json"
+    "data/appointments_current.json",
+    "data/social_groups_current.json"
   ],
   "当前入口": {
     "人类总入口": "CURRENT_ARCHIVE.md",
@@ -27,28 +24,30 @@
     "当前势力": "data/powers_current.json",
     "当前军队": "data/military_current.json",
     "当前装备": "data/equipment_current.json",
-    "当前拟任命": "data/appointments_pending.json",
     "当前政令": "data/current_directives.json",
-    "当前工作台": "三国档案/01_季度政务/05_当前工作台/建安十八年/基线/README.md",
-    "五层证据模型": "三国档案/00_总览/五层证据模型.md"
+    "当前工作台": "三国档案/01_季度政务/05_当前工作台/214年/春季/README.md",
+    "五层证据模型": "三国档案/00_总览/五层证据模型.md",
+    "当前任命": "data/appointments_current.json"
   },
   "当前资料完整度": {
-    "国家势力": "已录",
-    "党派": "已录",
-    "地块": "已录",
-    "大臣": "已录可见项",
-    "军队": "已录截图可见军队级指标",
-    "装备": "已录",
-    "奏疏": "已归档",
-    "府库现钱": "待核",
-    "主公私库": "待核",
-    "具体季度": "待核",
-    "七署正式生效": "待游戏反馈"
+    "214春纪要": "已归档",
+    "七署正式生效": "已确认",
+    "地方新任命": "费祎广汉太守、谯周巴东太守已确认",
+    "府库现钱": "738324.3钱",
+    "内库现钱": "590000钱",
+    "党派": "已更新",
+    "军队忠诚": "马超部、刘璋旧部已更新",
+    "装备": "季初岁造已更新",
+    "农民满意度": "正文20→28；末尾附加+1口径待核",
+    "汉纪": "待核",
+    "威望/权威字段": "是否同指标待核"
   },
   "事实规则": [
     "截图和正式奏疏属于L3，current_*属于据此生成的L4。",
-    "拟任命属于L1，不得直接提升为当前官职。",
+    "已由奏疏确认的任命可升级为L4现职。",
     "面板收入不等于实际入库。",
+    "军巡案队定员不等于已募兵。",
+    "立项勘丈不等于工程开工。",
     "冲突材料并列保存，不静默覆盖。"
   ]
 }
