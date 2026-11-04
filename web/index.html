@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta
+      name="description"
+      content="本地运行的崇祯模拟器政务资料录入、更新和上传工具"
+    >
+    <title>崇祯政务档案库</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主导航">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">明</div>
+          <div>
+            <p class="brand-name">崇祯政务档案库</p>
+            <p class="brand-subtitle">本地资料管理</p>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item is-active" type="button" data-view="overview">
+            档案总览
+          </button>
+          <button class="nav-item" type="button" data-view="entry">
+            录入资料
+          </button>
+          <button class="nav-item" type="button" data-view="quarterly">
+            季度闭环
+          </button>
+          <button class="nav-item" type="button" data-view="records">
+            查看与修改
+          </button>
+          <button class="nav-item" type="button" data-view="notes">
+            录入想法
+          </button>
+          <button class="nav-item" type="button" data-view="uploads">
+            上传文件
+          </button>
+        </nav>
+
+        <div class="local-note">
+          <strong>仅在本机运行</strong>
+          <span>本页保存资料，不连接游戏。</span>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="page-kicker">私人内阁档案</p>
+            <h1 id="page-title">档案总览</h1>
+          </div>
+          <div class="server-state" aria-live="polite">
+            <span class="state-dot" aria-hidden="true"></span>
+            <span id="server-label">正在连接本地服务</span>
+          </div>
+        </header>
+
+        <div id="global-error" class="inline-message is-error" hidden></div>
+
+        <section id="view-overview" class="view is-visible" aria-labelledby="overview-title">
+          <div class="overview-heading">
+            <div>
+              <h2 id="overview-title">今日可以从这里开始</h2>
+              <p>录入新回合，修订已有档案，或把原始资料原样上传保存。</p>
+            </div>
+            <button class="button button-primary" type="button" data-go="entry">
+              新增一条档案
+            </button>
+          </div>
+
+          <dl class="metric-grid" id="metric-grid" aria-label="档案数量">
+            <div class="metric metric-primary">
+              <dt>季度记录</dt>
+              <dd data-count="history">0</dd>
+              <span>皇帝日志</span>
+            </div>
+            <div class="metric">
+              <dt>朝臣档案</dt>
+              <dd data-count="personnel">0</dd>
+              <span>人物与履历</span>
+            </div>
+            <div class="metric">
+              <dt>诏书</dt>
+              <dd data-count="edicts">0</dd>
+              <span>政策原文</span>
+            </div>
+            <div class="metric">
+              <dt>国策</dt>
+              <dd data-count="strategy">0</dd>
+              <span>长期路线</span>
+            </div>
+            <div class="metric">
+              <dt>情报</dt>
+              <dd data-count="intelligence">0</dd>
+              <span>各地奏报</span>
+            </div>
+            <div class="metric">
+              <dt>参谋笔记</dt>
+              <dd data-count="personal_notes">0</dd>
+              <span>想法与教训</span>
+            </div>
+            <div class="metric">
+              <dt>上传资料</dt>
+              <dd data-count="uploads">0</dd>
+              <span>原始文件</span>
+            </div>
+          </dl>
+
+          <div class="overview-panels">
+            <section class="action-panel">
+              <h2>常用入口</h2>
+              <div class="action-list">
+                <button type="button" data-quick-dataset="history">
+                  <span>添加季度记录</span>
+                  <small>记录日期、局势、事件和结果</small>
+                </button>
+                <button type="button" data-quick-dataset="personnel">
+                  <span>更新朝臣档案</span>
+                  <small>登记职位、能力、关系和风险</small>
+                </button>
+                <button type="button" data-quick-dataset="intelligence">
+                  <span>收录关键情报</span>
+                  <small>按地区和事项保存奏报</small>
+                </button>
+                <button type="button" data-go="notes">
+                  <span>录入个人想法</span>
+                  <small>整段粘贴，由后续 AI 自行解析</small>
+                </button>
+                <button type="button" data-go="quarterly">
+                  <span>推进季度闭环</span>
+                  <small>密谈、草稿、诏书、反馈与回填分层留档</small>
+                </button>
+              </div>
+            </section>
+
+            <section class="sync-panel">
+              <h2>Markdown 知识库</h2>
+              <p>把当前 JSON 档案同步为便于阅读的“三国档案”。</p>
+              <button id="sync-button" class="button button-secondary" type="button">
+                立即同步
+              </button>
+              <p class="sync-result" id="sync-result" aria-live="polite"></p>
+            </section>
+          </div>
+        </section>
+
+        <section id="view-quarterly" class="view" aria-labelledby="quarterly-title">
+          <div class="section-heading">
+            <h2 id="quarterly-title">季度闭环工作单</h2>
+            <p>按“上季反馈 → 密谈 → 可行性 → 四板块草稿 → 玩家确认下诏 → 下季纪要回填”保存材料。系统不自动生成、提交或认定游戏结果。</p>
+          </div>
+
+          <div class="workflow-toolbar">
+            <label>
+              <span>已存工作单</span>
+              <select id="quarterly-workflow-select">
+                <option value="">新建工作单</option>
+              </select>
+            </label>
+            <button id="quarterly-new" class="button button-secondary" type="button">新建工作单</button>
+            <button id="quarterly-copy-prompt" class="button button-secondary" type="button">复制协作 AI 提示词</button>
+          </div>
+
+          <div id="quarterly-readiness" class="workflow-readiness" aria-live="polite"></div>
+
+          <form id="quarterly-form" class="workflow-form" autocomplete="off">
+            <input id="quarterly-id" type="hidden">
+            <div class="field-grid">
+              <label>
+                <span>当前游戏时间 <span class="required">必填</span></span>
+                <input id="quarterly-game-time" type="text" placeholder="如：崇祯十二年春" required>
+              </label>
+              <label>
+                <span>工作状态</span>
+                <select id="quarterly-stage">
+                  <option>收集上季反馈</option>
+                  <option>密谈中</option>
+                  <option>可行性核验</option>
+                  <option>政令草稿</option>
+                  <option>待玩家确认</option>
+                  <option>已下诏</option>
+                  <option>执行中</option>
+                  <option>待下季反馈</option>
+                  <option>已结案</option>
+                </select>
+              </label>
+              <label class="is-wide">
+                <span>上季反馈来源（L3）</span>
+                <textarea id="quarterly-feedback-source" placeholder="粘贴朝政纪要路径、游戏报告原文或截图说明；没有反馈时保持为空。"></textarea>
+              </label>
+              <label class="is-wide">
+                <span>本季主轴</span>
+                <textarea id="quarterly-main-axis" placeholder="本季优先目标、约束和不做什么。"></textarea>
+              </label>
+              <label class="is-wide">
+                <span>本季问题</span>
+                <textarea id="quarterly-problems" placeholder="需要通过密谈和政令回应的具体问题。"></textarea>
+              </label>
+              <label class="is-wide">
+                <span>密谈大臣、问题、分歧与取舍（L1）</span>
+                <textarea id="quarterly-consultation" placeholder="记录谁参与密谈、提出哪些问题、可选路线和最终取舍。"></textarea>
+              </label>
+              <label class="is-wide">
+                <span>可行性核验（L1）</span>
+                <textarea id="quarterly-feasibility" placeholder="钱粮、人事、既有制度、时限、风险、依赖条件。"></textarea>
+              </label>
+            </div>
+
+            <section class="workflow-section">
+              <h2>四板块政令草稿（L1）</h2>
+              <p>每行一项政令草稿。草稿不是已下达的诏书。</p>
+              <div class="field-grid workflow-drafts">
+                <label><span>军事</span><textarea id="quarterly-draft-military" placeholder="每行一项军事政令"></textarea></label>
+                <label><span>内政</span><textarea id="quarterly-draft-civil" placeholder="每行一项内政政令"></textarea></label>
+                <label><span>外交</span><textarea id="quarterly-draft-diplomacy" placeholder="每行一项外交政令"></textarea></label>
+                <label><span>其他</span><textarea id="quarterly-draft-other" placeholder="每行一项其他政令"></textarea></label>
+              </div>
+            </section>
+
+            <section class="workflow-section">
+              <h2>正式诏书（L2）</h2>
+              <p>仅在你已确认文本并实际提交游戏后，勾选“玩家确认已下诏”。</p>
+              <div class="field-grid">
+                <label><span>正式诏书标题</span><input id="quarterly-edict-title" type="text" placeholder="玩家实际采用的标题"></label>
+                <label class="check-field"><input id="quarterly-edict-confirmed" type="checkbox"><span>玩家确认已下诏</span></label>
+                <label class="is-wide"><span>正式诏书正文</span><textarea id="quarterly-edict-body" placeholder="粘贴你最终提交给游戏的完整诏书，不要粘贴仅供讨论的草稿。"></textarea></label>
+                <label class="is-wide"><span>执行任务与验收</span><textarea id="quarterly-tasks" placeholder="需要下季核验的对象、指标、时限与来源。"></textarea></label>
+              </div>
+            </section>
+
+            <section class="workflow-section">
+              <h2>下季朝政纪要与数据回填（L3/L4）</h2>
+              <p>收到游戏反馈后再填写。计划、诏书和推演结果绝不混写。</p>
+              <div class="field-grid">
+                <label><span>下季朝政纪要标题</span><input id="quarterly-chronicle-title" type="text" placeholder="实际收到的季度纪要标题"></label>
+                <label class="check-field"><input id="quarterly-result-confirmed" type="checkbox"><span>玩家确认已收到反馈</span></label>
+                <label class="is-wide"><span>下季朝政纪要原文或摘录</span><textarea id="quarterly-chronicle-body" placeholder="粘贴游戏实际返回的纪要，或注明原件路径。"></textarea></label>
+                <label class="is-wide"><span>数据回填清单</span><textarea id="quarterly-backfill" placeholder="逐项列出要更新到哪些 JSON、朝臣/军队/地方档案与当前快照；仅填写已经被纪要确认的结果。"></textarea></label>
+              </div>
+            </section>
+
+            <div class="form-actions">
+              <button class="button button-primary" type="submit">保存季度工作单</button>
+              <p id="quarterly-status" class="form-status" aria-live="polite"></p>
+            </div>
+          </form>
+        </section>
+
+        <section id="view-entry" class="view" aria-labelledby="entry-title">
+          <div class="section-heading">
+            <h2 id="entry-title">录入资料</h2>
+            <p>选择档案类型，填写后直接保存到对应 JSON 文件。</p>
+          </div>
+          <div class="form-layout">
+            <aside class="dataset-switcher" aria-label="选择档案类型">
+              <button type="button" class="is-active" data-dataset="history">季度记录</button>
+              <button type="button" data-dataset="personnel">朝臣档案</button>
+              <button type="button" data-dataset="edicts">诏书档案</button>
+              <button type="button" data-dataset="strategy">历史策略记录</button>
+              <button type="button" data-dataset="intelligence">关键情报</button>
+            </aside>
+            <div class="form-panel">
+              <div id="entry-form-host"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-records" class="view" aria-labelledby="records-title">
+          <div class="section-heading">
+            <h2 id="records-title">查看与修改</h2>
+            <p>搜索档案，打开单条记录后修订。系统不会删除旧资料。</p>
+          </div>
+          <div class="record-toolbar">
+            <label>
+              <span>档案类型</span>
+              <select id="record-dataset">
+                <option value="history">季度记录</option>
+                <option value="personnel">朝臣档案</option>
+                <option value="edicts">诏书档案</option>
+                <option value="strategy">历史策略记录</option>
+                <option value="personal_notes">参谋笔记</option>
+                <option value="intelligence">关键情报</option>
+              </select>
+            </label>
+            <label class="search-field">
+              <span>关键词</span>
+              <input id="record-search" type="search" placeholder="输入姓名、时间、事件或内容">
+            </label>
+            <a id="export-link" class="button button-secondary" href="/api/export/history">
+              导出 JSON
+            </a>
+          </div>
+          <div id="record-list" class="record-list" aria-live="polite"></div>
+        </section>
+
+        <section id="view-notes" class="view" aria-labelledby="notes-title">
+          <div class="section-heading">
+            <h2 id="notes-title">录入个人想法</h2>
+            <p>直接粘贴整段战略笔记、教训复盘或决策倾向，系统只保存原文。</p>
+          </div>
+
+          <div class="note-layout">
+            <form id="note-form" class="note-panel" autocomplete="off">
+              <label class="note-time-field">
+                <span>当前游戏时间</span>
+                <input
+                  id="note-game-time"
+                  type="text"
+                  placeholder="如：崇祯二年春"
+                  required
+                >
+              </label>
+              <label class="note-editor">
+                <span>整段内容</span>
+                <textarea
+                  id="note-content"
+                  placeholder="把你的想法一次性粘贴到这里。后续 AI 起草诏书时读取原文并自行解析。"
+                  required
+                ></textarea>
+              </label>
+              <div class="form-actions">
+                <button class="button button-primary" type="submit">收录为参谋笔记</button>
+                <p id="note-status" class="form-status" aria-live="polite"></p>
+              </div>
+            </form>
+
+            <section class="note-history">
+              <h2>已收录想法</h2>
+              <div id="note-list" class="note-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="view-uploads" class="view" aria-labelledby="uploads-title">
+          <div class="section-heading">
+            <h2 id="uploads-title">上传原始资料</h2>
+            <p>文件只会原样保存到本地 uploads 目录，不读取内容，不触发分析。</p>
+          </div>
+
+          <div class="upload-layout">
+            <form id="upload-form" class="upload-panel" autocomplete="off">
+              <div id="drop-zone" class="drop-zone">
+                <input
+                  id="upload-file"
+                  name="file"
+                  type="file"
+                  multiple
+                  accept=".json,.md,.txt,.csv,.pdf,.docx,.xlsx,.png,.jpg,.jpeg,.webp"
+                  required
+                >
+                <p class="drop-title">选择多个文件或拖放到这里</p>
+                <p>每个文件不超过 10MB</p>
+                <p id="selected-file" class="selected-file">尚未选择文件</p>
+              </div>
+              <div class="upload-fields">
+                <label>
+                  <span>资料分类</span>
+                  <select id="upload-category">
+                    <option selected>自动分类</option>
+                    <option>回合导出</option>
+                    <option>诏书资料</option>
+                    <option>天下大势</option>
+                    <option>朝政奏报</option>
+                    <option>战争资料</option>
+                    <option>财政资料</option>
+                    <option>人物资料</option>
+                    <option>其他</option>
+                  </select>
+                </label>
+                <label>
+                  <span>时间节点</span>
+                  <input
+                    id="upload-timeline"
+                    type="text"
+                    placeholder="留空时从文件名识别，如天启七年秋"
+                  >
+                </label>
+                <label>
+                  <span>备注</span>
+                  <input id="upload-note" type="text" placeholder="说明资料来源或对应回合">
+                </label>
+              </div>
+              <button class="button button-primary" type="submit">上传并分类保存</button>
+              <p id="upload-progress" class="form-status" aria-live="polite"></p>
+            </form>
+
+            <section class="upload-history">
+              <h2>已上传资料</h2>
+              <div id="upload-list" class="upload-list"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="edit-dialog" class="edit-dialog">
+      <div class="dialog-header">
+        <div>
+          <p>修订档案</p>
+          <h2 id="dialog-title">编辑记录</h2>
+        </div>
+        <button id="dialog-close" class="dialog-close" type="button" aria-label="关闭">
+          关闭
+        </button>
+      </div>
+      <div id="edit-form-host"></div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
