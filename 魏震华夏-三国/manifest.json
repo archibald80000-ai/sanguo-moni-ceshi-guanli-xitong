@@ -1,0 +1,33 @@
+{
+  "archive_name": "魏震华夏-三国",
+  "archive_status": "CLOSED_FINAL",
+  "closed_at": "2026-11-07",
+  "world_state_frozen_at": "222年夏季季末",
+  "source_head_before_archival": "2294cb4966e09ebdd6588bcc7b08875ab9d636f2",
+  "final_l3_source": "三国档案/01_季度政务/03_朝政纪要/222年/夏季/奏疏6a68b3397b9086c9b9c41ce7-34.md",
+  "final_state_version": "SG-222-SUMMER-AUTH-1",
+  "quarterly_memorial_count": 33,
+  "theoretical_quarters_from_214_spring_to_222_summer": 34,
+  "known_archive_gaps": [
+    "214冬有无编号纪要，不补造奏疏4",
+    "221冬缺独立L3纪要，不补造奏疏32"
+  ],
+  "final_summary": {
+    "controlled_regions": 27,
+    "population_lower_bound": 10520000,
+    "national_morale_last_confirmed": 72.82,
+    "treasury": 275750596.64,
+    "inner_treasury": 153723501,
+    "known_land_army_at_least": 416400,
+    "book_ships": 2070,
+    "status": "已登记独立地块全部归汉，天下一统名实俱成"
+  },
+  "unresolved_but_not_blocking_closure": [
+    "五地偏远清册最终值",
+    "统一后全国民心重算",
+    "220工业化500园区/100建筑终验",
+    "2070艘实际可战舰数",
+    "骁武军1000民兵去向",
+    "高句丽版籍不存在/未建档"
+  ]
+}
