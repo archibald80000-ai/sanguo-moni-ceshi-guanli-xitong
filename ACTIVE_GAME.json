@@ -1,0 +1,10 @@
+{
+  "active_game": "崇祯新局",
+  "status": "ACTIVE_NEW_GAME",
+  "namespace": "崇祯新局/",
+  "current_turn": 0,
+  "current_time": "天启七年冬季",
+  "next_time": "崇祯一年春季",
+  "previous_closed_archive": "魏震华夏-三国",
+  "global_data_note": "根目录旧data/*主要为上一局或历史遗留；本局权威状态只读崇祯新局/下文件。"
+}

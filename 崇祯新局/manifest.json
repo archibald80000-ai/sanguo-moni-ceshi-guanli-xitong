@@ -1,0 +1,20 @@
+{
+  "game_name": "崇祯新局",
+  "status": "ACTIVE_NEW_GAME",
+  "created_at": "2026-11-07",
+  "rules_version": "CZ-NEW-RULES-0",
+  "schema_version": "CZ-NEW-SCHEMA-0",
+  "current_state_version": "CZ-NEW-BASELINE-0",
+  "current_turn": 0,
+  "current_time": "天启七年冬季",
+  "next_turn": 1,
+  "next_time": "崇祯一年春季",
+  "source": "用户提供的公开Mod底层System规则",
+  "previous_game_archive": "魏震华夏-三国",
+  "isolation_rule": "旧崇祯/CZ文件和魏震华夏-三国均不得向本局注入世界事实；只能参考档案结构与方法。",
+  "pending": [
+    "第0回合pgsql背景数据库实际数据",
+    "events表起始映射",
+    "首个季度圣旨"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "version": "CZ-NEW-BASELINE-0",
+  "authority": "L4_EMPTY_BASELINE",
+  "game": "崇祯新局",
+  "stage": {
+    "turn": 0,
+    "label": "天启七年冬季",
+    "next_turn": 1,
+    "next_label": "崇祯一年春季"
+  },
+  "ruler": {
+    "identity": "崇祯皇帝",
+    "status": "已登基"
+  },
+  "db_state": "AWAITING_PGSQL_BASELINE",
+  "known_numeric_state": {},
+  "note": "目前只有公开System规则，尚未收到本局pgsql背景数据库的实际国家、财政、军队、省份、党派、阶层、势力、装备、建筑数值。禁止继承旧崇祯档案数值或历史知识补齐。"
+}

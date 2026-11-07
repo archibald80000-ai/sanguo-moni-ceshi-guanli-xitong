@@ -1,0 +1,147 @@
+{
+  "version": "CZ-NEW-SCHEMA-GUARD-0",
+  "rules": {
+    "troops": {
+      "meaning": "军队",
+      "valid_fields": {
+        "name": "显示名/番号",
+        "morale": "士气",
+        "loyalty": "忠诚",
+        "supply": "补给",
+        "exp": "经验",
+        "salary_rate": "满饷率，0至1；不是满编率",
+        "extra_cost": "额外军费，两/人/季度，0至10；不是比例",
+        "composition": "兵种构成；type=ship时count=舰船数，不是船员数",
+        "location_province_code_name": "驻地",
+        "regime_code_name": "所属势力"
+      },
+      "forbidden_inference": [
+        "salary_rate不得解释为满编率",
+        "ship的count不得解释为船员人数",
+        "舰船船员数必须由ship_configs.crew_count计算"
+      ]
+    },
+    "ministers": {
+      "meaning": "大臣",
+      "valid_fields": {
+        "influence": "影响力",
+        "position": "职位数组",
+        "stance": "立场",
+        "is_alive": "生死",
+        "is_visible": "可见性",
+        "party_code_name": "党籍"
+      },
+      "forbidden_fields": [
+        "loyalty",
+        "morale"
+      ],
+      "create_rule": "不在表中仅表示未录入；皇帝任命/招募合理存在人物时可create。"
+    },
+    "provinces": {
+      "meaning": "省份",
+      "valid_fields": {
+        "public_sentiment": "民心",
+        "rebellion_risk": "叛乱风险",
+        "population": "人口",
+        "tax_rate": "税率",
+        "disaster_status": "灾害状态",
+        "disaster_level": "灾害文本"
+      },
+      "disaster_level_enum": [
+        "正常",
+        "轻微",
+        "中等",
+        "严重"
+      ],
+      "forbidden_fields": [
+        "morale",
+        "supply"
+      ]
+    },
+    "parties": {
+      "meaning": "党派",
+      "valid_fields": {
+        "satisfaction": "满意度",
+        "influence": "影响力"
+      }
+    },
+    "social_classes": {
+      "meaning": "阶层",
+      "valid_fields": {
+        "satisfaction": "满意度",
+        "influence": "影响力"
+      }
+    },
+    "regimes": {
+      "meaning": "势力",
+      "numeric_fields_only": {
+        "corruption": "腐败",
+        "prestige": "威望",
+        "currency_policy": "货币政策"
+      },
+      "forbidden_fields": [
+        "satisfaction",
+        "population",
+        "treasury",
+        "morale",
+        "supply"
+      ]
+    },
+    "finances": {
+      "meaning": "财政",
+      "valid_fields": {
+        "treasury": "国库",
+        "privacy": "内帑",
+        "salt_tea_tax": "盐茶税",
+        "transport_tax": "钞关税",
+        "ore_tax": "矿税",
+        "trade_tax": "商业税",
+        "jinhua_tax": "金花银"
+      },
+      "rule": "政权财政余额只认finances，不认regimes。"
+    },
+    "equipments": {
+      "meaning": "装备",
+      "valid_fields": {
+        "code_name": "装备代号",
+        "name": "名称",
+        "description": "说明",
+        "stock_count": "库存",
+        "annual_output": "季度产量"
+      },
+      "note": "字段名annual_output在本剧本显示语义为季度产量。"
+    },
+    "buildings": {
+      "meaning": "建筑",
+      "valid_fields": {
+        "code_name": "建筑代号",
+        "name": "名称",
+        "building_location": "所在省份代号",
+        "build_effects": "建筑效果"
+      },
+      "note": "效果中的“/季”表示每季度恒定核算基数，不表示基数逐季复利累加。"
+    },
+    "arm_configs": {
+      "meaning": "兵种模板",
+      "valid_fields": {
+        "code_name": "兵种代号",
+        "name": "名称",
+        "description": "说明",
+        "maintenance_cost": "单兵季度维护费",
+        "equipment_requirements": "单兵装备需求"
+      }
+    },
+    "ship_configs": {
+      "meaning": "船种模板",
+      "valid_fields": {
+        "code_name": "船种代号",
+        "name": "名称",
+        "description": "说明",
+        "maintenance_cost": "单船季度维护费",
+        "crew_count": "船员数",
+        "light_cannon_count": "轻炮数",
+        "heavy_cannon_count": "重炮数"
+      }
+    }
+  }
+}

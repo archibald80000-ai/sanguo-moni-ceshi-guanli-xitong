@@ -1,0 +1,22 @@
+{
+  "version": "CZ-NEW-CLOCK-0",
+  "turn_length_months": 3,
+  "turns_per_year": 4,
+  "baseline": {
+    "turn": 0,
+    "label": "天启七年冬季",
+    "status": "崇祯已经登基"
+  },
+  "next": {
+    "turn": 1,
+    "label": "崇祯一年春季"
+  },
+  "conversion_examples": {
+    "三年": 12,
+    "两年": 8,
+    "一年": 4,
+    "两季": 2,
+    "一季": 1
+  },
+  "validation": "任何期限必须换算为回合数后，再与pgsql背景events表的起点、期限、时间标签核对。"
+}
